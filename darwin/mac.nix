@@ -60,7 +60,6 @@
       # firefox
       obsidian
 	    _1password # export NIXPKGS_ALLOW_UNFREE=1
-      _1password-gui
     ];
   };
 

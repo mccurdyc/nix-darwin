@@ -17,8 +17,8 @@
           };
 
 	  window.dimensions = {
-	    lines = 5;
-	    columns = 200;
+	    lines = 30;
+	    columns = 100;
 	  };
         };
       };

@@ -54,9 +54,13 @@
 	    tailscale
 	    wireguard-go
 	    wireguard-tools
-		fd
+	fd
       ripgrep
-	    # _1password # export NIXPKGS_ALLOW_UNFREE=1
+      # https://discourse.nixos.org/t/firefox-unsupported-on-aarch64-darwin/18388
+      # firefox
+      obsidian
+	    _1password # export NIXPKGS_ALLOW_UNFREE=1
+      _1password-gui
     ];
   };
 
@@ -117,6 +121,10 @@
       };
     };
     activationScripts.postActivation.text = ''sudo chsh -s ${pkgs.zsh}/bin/zsh''; # Set Default Shell
+
+# https://github.com/MatthiasBenaets/nixos-config/blob/master/darwin.org#running-apps
+# ls -la /nix/store | rg 1password
+# ln -s /nix/store/j1a12f5iyf0d9bwv9bpk7gzyv46rf7gf-1password-8.10.9/Applications/1Password.app /Applications/.
 
     # Nix-darwin does not link installed applications to the user environment. This means apps will not show up
   # in spotlight, and when launched through the dock they come with a terminal window. This is a workaround.

@@ -15,6 +15,10 @@ in {
     modules = [
       ./configuration.nix
       ./faamac/user.nix
+      ../modules/alacritty/default.nix
+      ../modules/skhd/default.nix
+      ../modules/yabai/default.nix
+      ../modules/zsh/default.nix
 
       home-manager.darwinModules.home-manager
       {

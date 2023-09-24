@@ -19,10 +19,8 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, darwin, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, darwin, flake-utils, ... }@inputs:
     let
-      system = "aarch64-darwin";
-      pkgs = import nixpkgs { inherit system; };
       vars = {
         # Variables Used In Flake
         user = "mccurdyc";
@@ -31,8 +29,9 @@
       };
     in
     {
-
-      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
+      formatter = {
+        "aarch64-darwin" = nixpkgs.legacyPackages."aarch64-darwin".nixpkgs-fmt;
+      };
 
       # nixosConfigurations = (                                               # NixOS Configurations
       # import ./hosts {

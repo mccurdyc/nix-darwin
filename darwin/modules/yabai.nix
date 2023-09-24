@@ -37,15 +37,15 @@ with lib;
           left_padding = "10";
           right_padding = "10";
           window_gap = "5";
-	  # https://github.com/koekeishiya/yabai/blob/master/doc/yabai.asciidoc#6-domains
+          # https://github.com/koekeishiya/yabai/blob/master/doc/yabai.asciidoc#6-domains
           window_border = "on";
           window_border_width = "4";
-    window_border_hidpi = "on";
-    window_border_blur = "off";
-    window_border_radius = "0";
-	  insert_feedback_color = "0xffa54242";
-    active_window_border_color = "0xffde935f";
-    normal_window_border_color = "0xffc5c8c6";
+          window_border_hidpi = "on";
+          window_border_blur = "off";
+          window_border_radius = "0";
+          insert_feedback_color = "0xffa54242";
+          active_window_border_color = "0xffde935f";
+          normal_window_border_color = "0xffc5c8c6";
         };
         extraConfig = ''
           yabai -m rule --add title='Preferences' manage=off layer=above

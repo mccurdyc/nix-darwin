@@ -3,51 +3,57 @@
   description = "darwin system";
 
   inputs = {
-  nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";                     # Stable Nix Packages (Default)
-nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";         # Unstable Nix Packages
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05"; # Stable Nix Packages (Default)
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # Unstable Nix Packages
 
- home-manager = {                                                      # User Environment Manager
-        url = "github:nix-community/home-manager/release-23.05";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+    home-manager = {
+      # User Environment Manager
+      url = "github:nix-community/home-manager/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    darwin = {                                                            # MacOS Package Management
-        url = "github:lnl7/nix-darwin/master";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+    darwin = {
+      # MacOS Package Management
+      url = "github:lnl7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, darwin, ... }@inputs : let
-  	system = "aarch-darwin";
-	pkgs = import nixpkgs { inherit system; };
-	 vars = {                                                              # Variables Used In Flake
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, darwin, ... }@inputs:
+    let
+      system = "aarch64-darwin";
+      pkgs = import nixpkgs { inherit system; };
+      vars = {
+        # Variables Used In Flake
         user = "mccurdyc";
         terminal = "alacritty";
         editor = "nvim";
       };
-  in {
-	
-    # formatter = pkgs.nixpkgs-fmt;
+    in
+    {
 
-     # nixosConfigurations = (                                               # NixOS Configurations
- # import ./hosts {
-        # inherit (nixpkgs) lib;
-        # inherit inputs nixpkgs nixpkgs-unstable home-manager vars;   # Inherit inputs
-# }
-# );
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
 
-      darwinConfigurations = (                                              # Darwin Configurations
+      # nixosConfigurations = (                                               # NixOS Configurations
+      # import ./hosts {
+      # inherit (nixpkgs) lib;
+      # inherit inputs nixpkgs nixpkgs-unstable home-manager vars;   # Inherit inputs
+      # }
+      # );
+
+      darwinConfigurations = (
+        # Darwin Configurations
         import ./darwin {
           inherit (nixpkgs) lib;
           inherit inputs nixpkgs nixpkgs-unstable home-manager darwin vars;
         }
       );
 
-# homeConfigurations = (                                                # Nix Configurations
-# import ./nix {
-        # inherit (nixpkgs) lib;
-        # inherit inputs nixpkgs nixpkgs-unstable home-manager vars;
-        # }
+      # homeConfigurations = (                                                # Nix Configurations
+      # import ./nix {
+      # inherit (nixpkgs) lib;
+      # inherit inputs nixpkgs nixpkgs-unstable home-manager vars;
+      # }
       # );
     };
 }

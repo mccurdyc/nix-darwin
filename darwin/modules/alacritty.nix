@@ -16,13 +16,13 @@
             size = 22;
           };
 
-	  window.dimensions = {
-	    lines = 30;
-	    columns = 100;
-	  };
+          window.dimensions = {
+            lines = 30;
+            columns = 100;
+          };
 
-	# remove titlebar
-	  window.decorations = "None";
+          # remove titlebar
+          window.decorations = "None";
         };
       };
     };

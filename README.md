@@ -1,130 +1,80 @@
 # Mac Setup
 
-1. Manual App Store installs for apps that just don't seem to work when installed via nix-darwin
+## Inspiration
 
-- GoodNotes 5
+- [MatthiasBenaets/nixos-config](https://github.com/MatthiasBenaets/nixos-config/tree/76eea152f56e1a8f4c908b65028e8aa2f7bafaaa)
+    - [For Mac](https://github.com/MatthiasBenaets/nixos-config/blob/76eea152f56e1a8f4c908b65028e8aa2f7bafaaa/README.org#nix-darwin-installation-guide)
 
-1. Manual App installs for apps not in the App Store that also don't seem to work via nix-darwin
+## Steps
 
-- Firefox
-- Obsidian
-- 1Password
+1. Manual App installs for apps that just don't seem to work when installed via nix-darwin
+
+    - GoodNotes 5
+    - Firefox
+    - 1Password (GUI)
+    - Zoom
 
 1. Install Nix
 
-- https://github.com/DeterminateSystems/nix-installer
+    ```bash
+    sh <(curl -L https://nixos.org/nix/install)
+    ```
+
+    ```bash
+    mkdir ~/.config/nix
+    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+    ```
+
+1. Clone nixos-config repo
+
+    ```bash
+    nix-env -iA nixpkgs.git
+    git clone https://github.com/mccurdyc/nixos-config ~/nixos-config
+    cd ~/nixos-config
+    ln -s $HOME/nixos-config $HOME/.config/nixpkgs
+    ```
+
+1. Rebuild
+
+    ```bash
+    sudo NIXPKGS_ALLOW_UNFREE=1 \
+    HOME=/var/root NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt \
+    nix build --extra-experimental-features 'nix-command flakes' --impure .#darwinConfigurations.faamac.system
+    ```
+
+    Activate
+
+    ```bash
+    ./result/sw/bin/darwin-rebuild switch --flake .#faamac
+    ```
+
+1. Start tailscale daemon
+
+    ```bash
+    sudo tailscaled install-system-daemon
+    tailscale login
+    ```
+
+## Common Commands
+
+### Rebuilding System
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake .#
 ```
 
-1. Install nix-darwin
-
-- https://github.com/LnL7/nix-darwin
+### Formatting
 
 ```bash
-nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-./result/bin/darwin-installer
+nix fmt
 ```
 
-```bash
-sudo mv /etc/nix/nix.{conf,conf.bak}
-nix-channel --add http://nixos.org/channels/nixpkgs-23.05 nixpkgs
-nix-channel --update
-./result/bin/darwin-installer 
-source /etc/static/zshrc
-mkdir -p ~/.config/darwin
-```
+## References
 
-Copied default configs from nix-darwin README
-
-```bash
-cat <<EOF > ~/.config/darwin/configuration.nix
-{ config, pkgs, lib, ... }:
-
-{
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
-  environment.systemPackages =
-    [ pkgs.neovim
-    ];
-
-  # Use a custom configuration.nix location.
-  # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix
-  # environment.darwinConfig = "$HOME/.config/nixpkgs/darwin/configuration.nix";
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  # nix.package = pkgs.nix;
-
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  programs.zsh.enable = true;  # default shell on catalina
-
-  # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
-  system.stateVersion = 4;
-}
-EOF
-```
-
-The default system hostname is `MacBook-Pro` we will change that.
-```bash
-cat <<EOF > ~/.config/darwin/flake.nix
-{
-  description = "darwin system";
-
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
-    darwin.url = "github:lnl7/nix-darwin/master";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
-  };
-
-  outputs = { self, darwin, nixpkgs }: {
-    darwinConfigurations."MacBook-Pro" = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [ ./configuration.nix ];
-    };
-  };
-}
-EOF
-```
-
-re-build system
-```bash
-nix build --experimental-features 'nix-command' --extra-experimental-features 'flakes' ~/.config/darwin\#darwinConfigurations.MacBook-Pro.system
-darwin-rebuild switch --flake ~/.config/darwin
-```
-
-Change the hostname to `faamac` in `~/.config/darwin/configuration.nix`.
-
-```nix
-networking.hostName = "faamac";
-```
-
-Change the hostname to `faamac` in `~/.config/darwin/flake.nix`
-
-```nix
-```
-
-re-build system
-```bash
-nix build --experimental-features 'nix-command' --extra-experimental-features 'flakes' ~/.config/darwin\#darwinConfigurations.faamac.system
-darwin-rebuild switch --flake ~/.config/darwin
-```
-
-Start tailscale daemon
-```bash
-sudo tailscaled install-system-daemon
-tailscale login
-```
-
-
-# References
 - nix-darwin config options - https://daiderd.com/nix-darwin/manual/index.html#sec-options
 - https://github.com/LnL7/nix-darwin/wiki/Changing-the-configuration.nix-location
 Confirmed nix-darwin is what Mitchell Hashimoto uses - https://github.com/mitchellh/nixos-config
 
-
-# Open Questions
+## Open Questions
 
 - GUI Apps - https://github.com/LnL7/nix-darwin/issues/139#issuecomment-666771621

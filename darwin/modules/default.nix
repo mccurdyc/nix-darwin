@@ -1,6 +1,5 @@
 [
-  ./alacritty.nix
-  ./skhd.nix
-  ./yabai.nix
-  ./zsh.nix
+  ./alacritty/default.nix
+  ./skhd/default.nix
+  ./yabai/default.nix
 ]

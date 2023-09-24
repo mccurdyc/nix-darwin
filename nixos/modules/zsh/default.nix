@@ -110,7 +110,9 @@ in {
         # https://github.com/Aloxaf/fzf-tab/issues/193#issuecomment-784722265
         setopt globdots
 
-        eval "$(direnv hook zsh)"
+        if [ -x "$(command -v direnv)" ]; then
+               	eval "$(direnv hook zsh)"
+        fi
         eval "$(starship init zsh)"
 
         source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
@@ -120,11 +122,17 @@ in {
         # NOTE: I had issues with zsh-vi-mode overwriting ^R
         source ${pkgs.fzf}/share/fzf/key-bindings.zsh
 
-        source <(stern --completion=zsh)
+        if [ -x "$(command -v stern)" ]; then
+               	source <(stern --completion=zsh)
+        fi
 
-         eval "$(fastly --completion-script-zsh)"
+        if [ -x "$(command -v fastly)" ]; then
+               	eval "$(fastly --completion-script-zsh)"
+        fi
 
-        eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
+        if [ -x "$(command -v keychain)" ]; then
+               	eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
+        fi
 
         # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
         autoload bashcompinit && bashcompinit

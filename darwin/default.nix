@@ -1,11 +1,3 @@
-#
-#  These are the different profiles that can be used when building on MacOS
-#
-#  flake.nix
-#   └─ ./darwin
-#       ├─ default.nix *
-#       └─ <host>.nix
-#
 {
   lib,
   inputs,

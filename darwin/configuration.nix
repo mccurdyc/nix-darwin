@@ -34,6 +34,7 @@
     systemPackages = with pkgs; [
       alacritty
       alejandra
+      fzf
       git
       gnupg
       htop

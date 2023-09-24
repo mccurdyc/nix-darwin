@@ -59,8 +59,8 @@
 
 ### Rebuilding System
 
-```bash
-NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake .#
+```zsh
+NIXPKGS_ALLOW_UNFREE=1 darwin-rebuild switch --impure --flake '.#'
 ```
 
 ### Formatting

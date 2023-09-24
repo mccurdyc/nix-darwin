@@ -1,13 +1,15 @@
 # Refs
 # - https://bryce-s.com/yabai/
-
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib; let
   cfg = config.modules.yabai;
-in
-{
-  options.modules.yabai = { enable = mkEnableOption "yabai"; };
+in {
+  options.modules.yabai = {enable = mkEnableOption "yabai";};
   config = mkIf cfg.enable {
     services = {
       yabai = {

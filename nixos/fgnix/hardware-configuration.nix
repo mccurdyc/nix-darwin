@@ -1,12 +1,17 @@
-{ config, lib, pkgs, modulesPath, ... }:
-with lib;
 {
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
+with lib; {
   # https://nixos.wiki/wiki/Flakes#NixOS
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # https://floxdev.com/docs/install-flox/
-  nix.settings.extra-trusted-substituters = [ "https://cache.floxdev.com" ];
-  nix.settings.extra-trusted-public-keys = [ "_FLOX_PUBLIC_KEYS()" ];
+  nix.settings.extra-trusted-substituters = ["https://cache.floxdev.com"];
+  nix.settings.extra-trusted-public-keys = ["_FLOX_PUBLIC_KEYS()"];
 
   # https://nixos.org/manual/nixos/stable/options.html
 
@@ -32,9 +37,9 @@ with lib;
   boot.growPartition = true;
 
   # Trusting google-compute-config.nix
-  boot.kernelParams = [ "console=ttyS0" "panic=1" "boot.panic_on_fail" ];
-  boot.initrd.kernelModules = [ "virtio_scsi" ];
-  boot.kernelModules = [ "virtio_pci" "virtio_net" ];
+  boot.kernelParams = ["console=ttyS0" "panic=1" "boot.panic_on_fail"];
+  boot.initrd.kernelModules = ["virtio_scsi"];
+  boot.kernelModules = ["virtio_pci" "virtio_net"];
 
   # Generate a GRUB menu.
   boot.loader.grub.device = "/dev/sda";
@@ -49,8 +54,8 @@ with lib;
   security.googleOsLogin.enable = true;
 
   # Use GCE udev rules for dynamic disk volumes
-  services.udev.packages = [ pkgs.google-guest-configs ];
-  services.udev.path = [ pkgs.google-guest-configs ];
+  services.udev.packages = [pkgs.google-guest-configs];
+  services.udev.path = [pkgs.google-guest-configs];
 
   # Force getting the hostname from Google Compute.
   networking.hostName = "fgnix";
@@ -81,7 +86,7 @@ with lib;
     169.254.169.254 metadata.google.internal metadata
   '';
 
-  networking.timeServers = [ "metadata.google.internal" ];
+  networking.timeServers = ["metadata.google.internal"];
   networking.usePredictableInterfaceNames = false;
 
   # GC has 1460 MTU
@@ -103,22 +108,30 @@ with lib;
   #   script = "mosh"; # might need to be mosh-server
   # };
 
-  systemd.packages = [ pkgs.google-guest-agent ];
+  systemd.packages = [pkgs.google-guest-agent];
 
   systemd.services.google-guest-agent = {
-    wantedBy = [ "multi-user.target" ];
-    restartTriggers = [ config.environment.etc."default/instance_configs.cfg".source ];
+    wantedBy = ["multi-user.target"];
+    restartTriggers = [config.environment.etc."default/instance_configs.cfg".source];
     path = lib.optional config.users.mutableUsers pkgs.shadow;
   };
 
-  systemd.services.google-startup-scripts.wantedBy = [ "multi-user.target" ];
-  systemd.services.google-shutdown-scripts.wantedBy = [ "multi-user.target" ];
+  systemd.services.google-startup-scripts.wantedBy = ["multi-user.target"];
+  systemd.services.google-shutdown-scripts.wantedBy = ["multi-user.target"];
 
   security.sudo.extraRules = mkIf config.users.mutableUsers [
-    { groups = [ "google-sudoers" ]; commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }]; }
+    {
+      groups = ["google-sudoers"];
+      commands = [
+        {
+          command = "ALL";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
   ];
 
-  users.groups.google-sudoers = mkIf config.users.mutableUsers { };
+  users.groups.google-sudoers = mkIf config.users.mutableUsers {};
 
   boot.extraModprobeConfig = lib.readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";
 

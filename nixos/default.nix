@@ -1,6 +1,12 @@
-{ lib, inputs, nixpkgs, nixpkgs-unstable, home-manager, vars, ... }:
-
-let
+{
+  lib,
+  inputs,
+  nixpkgs,
+  nixpkgs-unstable,
+  home-manager,
+  vars,
+  ...
+}: let
   system = "x86_64-linux";
 
   pkgs = import nixpkgs {
@@ -14,8 +20,7 @@ let
   };
 
   lib = nixpkgs.lib;
-in
-{
+in {
   nuc = lib.nixosSystem {
     inherit system;
     specialArgs = {

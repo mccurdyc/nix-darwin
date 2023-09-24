@@ -1,11 +1,12 @@
-{ config
-, pkgs
-, inputs
-, vars
-, ...
+{
+  config,
+  pkgs,
+  inputs,
+  vars,
+  ...
 }: {
   # Remove unecessary preinstalled packages
-  environment.defaultPackages = [ ];
+  environment.defaultPackages = [];
 
   services.xserver.desktopManager.xterm.enable = false;
   programs.zsh.enable = true;
@@ -23,8 +24,8 @@
   nix = {
     settings = {
       auto-optimise-store = true;
-      allowed-users = [ ${vars.user} ];
-      trusted-users = [ "root" ${vars.user} ];
+      allowed-users = [${vars.user}];
+      trusted-users = ["root" ${vars.user}];
     };
     gc = {
       automatic = true;
@@ -59,7 +60,7 @@
   users.users.mccurdyc = {
     isNormalUser = true;
     home = "/home/mccurdyc";
-    extraGroups = [ "docker" "wheel" ];
+    extraGroups = ["docker" "wheel"];
     shell = pkgs.zsh;
     hashedPassword = ${vars.hashedPassword};
   };
@@ -75,7 +76,7 @@
 
   # if you also want support for flakes
   nixpkgs.overlays = [
-    (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
+    (self: super: {nix-direnv = super.nix-direnv.override {enableFlakes = true;};})
   ];
 
   # Lots of stuff that claims doesn't work, actually works.
@@ -93,16 +94,16 @@
     autoPrune = {
       enable = true;
       dates = "weekly";
-      flags = [ "--all" ];
+      flags = ["--all"];
     };
   };
 
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
-      trustedInterfaces = [ "tailscale0" ];
-      allowedUDPPorts = [ config.services.tailscale.port ];
+      allowedTCPPorts = [22];
+      trustedInterfaces = ["tailscale0"];
+      allowedUDPPorts = [config.services.tailscale.port];
       allowedUDPPortRanges = [
         {
           from = 60000;

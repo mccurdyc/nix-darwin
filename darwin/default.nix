@@ -6,16 +6,20 @@
 #       ├─ default.nix *
 #       └─ <host>.nix
 #
-
-{ lib, inputs, nixpkgs, darwin, home-manager, vars, ... }:
-
-let
-  system = "aarch64-darwin";
-in
 {
+  lib,
+  inputs,
+  nixpkgs,
+  darwin,
+  home-manager,
+  vars,
+  ...
+}: let
+  system = "aarch64-darwin";
+in {
   faamac = darwin.lib.darwinSystem {
     inherit system;
-    specialArgs = { inherit inputs vars; };
+    specialArgs = {inherit inputs vars;};
     modules = [
       ./configuration.nix
       ./faamac/user.nix

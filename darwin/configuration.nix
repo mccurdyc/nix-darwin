@@ -1,10 +1,11 @@
-{ config
-, lib
-, pkgs
-, vars
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  vars,
+  ...
 }: {
-  imports = (import ./modules);
+  imports = import ./modules;
 
   users.users.${vars.user} = {
     home = "/Users/${vars.user}";
@@ -25,20 +26,20 @@
   };
 
   environment = {
-    shells = with pkgs; [ zsh ]; # Default Shell
+    shells = with pkgs; [zsh]; # Default Shell
     variables = {
       EDITOR = "${vars.editor}";
       VISUAL = "${vars.editor}";
     };
     systemPackages = with pkgs; [
       alacritty
+      alejandra
       git
       gnupg
       htop
       mosh
       neovim
       jq
-      nixpkgs-fmt
       tailscale
       wireguard-go
       wireguard-tools
@@ -138,7 +139,7 @@
               # It does understand MacOS aliases though, a unique filesystem feature. Sadly they cannot be created
               # from bash (as far as I know), so we use the oh-so-great Apple Script instead.
               /usr/bin/osascript -e "
-                  set fileToAlias to POSIX file \"$src\" 
+                  set fileToAlias to POSIX file \"$src\"
                   set applicationsFolder to POSIX file \"$nix_apps\"
                   tell application \"Finder\"
                       make alias file to fileToAlias at applicationsFolder

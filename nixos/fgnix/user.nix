@@ -1,10 +1,11 @@
-{ config
-, lib
-, pkgs
-, inputs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
 }: {
-  imports = [ ../../modules/default.nix ];
+  imports = [../../modules/default.nix];
   config.modules = {
     nvim.enable = true;
     zsh.enable = true;

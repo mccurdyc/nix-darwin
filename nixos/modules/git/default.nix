@@ -1,13 +1,13 @@
-{ pkgs
-, lib
-, config
-, ...
+{
+  pkgs,
+  lib,
+  config,
+  ...
 }:
 with lib; let
   cfg = config.modules.git;
-in
-{
-  options.modules.git = { enable = mkEnableOption "git"; };
+in {
+  options.modules.git = {enable = mkEnableOption "git";};
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
@@ -18,7 +18,7 @@ in
         signByDefault = true;
       };
       extraConfig = {
-        init = { defaultBranch = "main"; };
+        init = {defaultBranch = "main";};
         core = {
           excludesfile = "${config.home.homeDirectory}/.config/git/ignore";
         };
@@ -37,7 +37,7 @@ in
           conflictStyle = "diff3";
         };
         mergetool."nvimmerge" = {
-          # http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/         
+          # http://vimcasts.org/episodes/fugitive-vim-resolving-merge-conflicts-with-vimdiff/
           name = "nvimmerge";
           trustExitCode = true;
           cmd = "nvim -f -c Gdiffsplit! $MERGED";

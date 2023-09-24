@@ -1,17 +1,17 @@
-{ pkgs
-, lib
-, config
-, ...
+{
+  pkgs,
+  lib,
+  config,
+  ...
 }:
 with lib; let
   cfg = config.modules.packages;
-in
-{
+in {
   options.modules.packages = {
     enable = mkEnableOption "packages";
     additional-packages = mkOption {
       type = types.listOf types.package;
-      default = [ ];
+      default = [];
     };
   };
   config = mkIf cfg.enable {

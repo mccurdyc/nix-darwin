@@ -1,23 +1,11 @@
-#
-#  Hotkey Daemon
-#  Enable with "skhd.enable = true;"
-#
-
 { config, lib, pkgs, ... }:
 
-with lib;
+with lib; let
+  cfg = config.modules.skhd;
+in
 {
-  options.skhd = {
-    enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = mdDoc ''
-        Simple Hotkey Daemon for MacOS
-      '';
-    };
-  };
-
-  config = mkIf config.skhd.enable {
+  options.modules.skhd = { enable = mkEnableOption "skhd"; };
+  config = mkIf cfg.enable {
     services = {
       skhd = {
         enable = true;

@@ -1,26 +1,14 @@
-#
-#  Tiling Window Manager for MacOS
-#  Enable with "yabai.enable = true;"
-#
-
 # Refs
 # - https://bryce-s.com/yabai/
 
 { config, lib, pkgs, ... }:
 
-with lib;
+with lib; let
+  cfg = config.modules.yabai;
+in
 {
-  options.yabai = {
-    enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = mdDoc ''
-        Tiling Window Manager for MacOS
-      '';
-    };
-  };
-
-  config = mkIf config.yabai.enable {
+  options.modules.yabai = { enable = mkEnableOption "yabai"; };
+  config = mkIf cfg.enable {
     services = {
       yabai = {
         enable = true;

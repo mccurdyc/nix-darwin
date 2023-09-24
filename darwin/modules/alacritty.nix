@@ -1,7 +1,3 @@
-#
-#  Terminal Emulator
-#
-
 { pkgs, vars, ... }:
 
 {

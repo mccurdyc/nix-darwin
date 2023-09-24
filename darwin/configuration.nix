@@ -1,35 +1,17 @@
-#
-#  Specific system configuration settings for MacBook
-#
-#  flake.nix
-#   └─ ./darwin
-#       ├─ default.nix
-#       ├─ mac.nix *
-#       └─ ./modules
-#           └─ default.nix
-#
-
-{ config, pkgs, vars, lib, ... }:
-
-{
+{ config
+, lib
+, pkgs
+, vars
+, ...
+}: {
   imports = (import ./modules);
 
   users.users.${vars.user} = {
-    # MacOS User
     home = "/Users/${vars.user}";
     shell = pkgs.zsh; # Default Shell
   };
 
-  networking = {
-    computerName = "cmac"; # Host Name
-    hostName = "faamac";
-  };
-
-  skhd.enable = true; # Window Manager
-  yabai.enable = true;
-
   fonts = {
-    # Fonts
     fontDir.enable = true;
     fonts = with pkgs; [
       source-code-pro
@@ -45,12 +27,10 @@
   environment = {
     shells = with pkgs; [ zsh ]; # Default Shell
     variables = {
-      # Environment Variables
       EDITOR = "${vars.editor}";
       VISUAL = "${vars.editor}";
     };
     systemPackages = with pkgs; [
-      # System-Wide Packages
       alacritty
       git
       gnupg
@@ -80,7 +60,6 @@
   };
 
   homebrew = {
-    # Homebrew Package Manager
     enable = true;
     onActivation = {
       autoUpdate = false;
@@ -109,7 +88,6 @@
   };
 
   system = {
-    # Global macOS System Settings
     defaults = {
       NSGlobalDomain = {
         KeyRepeat = 1;

@@ -10,7 +10,7 @@
 #
 
 [
-  # ./skhd.nix
-  # ./yabai.nix
+  ./skhd.nix
+  ./yabai.nix
   ./alacritty.nix
 ]

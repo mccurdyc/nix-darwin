@@ -24,6 +24,9 @@
     hostName = "faamac";
   };
 
+  skhd.enable = true;                    # Window Manager
+  yabai.enable = true;
+
   fonts = {                               # Fonts
     fontDir.enable = true;
     fonts = with pkgs; [

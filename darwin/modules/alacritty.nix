@@ -20,6 +20,9 @@
 	    lines = 30;
 	    columns = 100;
 	  };
+
+	# remove titlebar
+	  window.decorations = "None";
         };
       };
     };

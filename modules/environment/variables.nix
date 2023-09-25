@@ -1,0 +1,4 @@
+{
+  EDITOR = "neovim";
+  VISUAL = "neovim";
+}

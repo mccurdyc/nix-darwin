@@ -1,62 +1,29 @@
 {
+  user,
   config,
-  lib,
   pkgs,
-  vars,
+  lib,
   ...
 }: {
-  users.users.${vars.user} = {
-    home = "/Users/${vars.user}";
-    shell = pkgs.zsh; # Default Shell
-  };
-
-  fonts = {
-    fontDir.enable = true;
-    fonts = with pkgs; [
-      source-code-pro
-      font-awesome
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-        ];
-      })
-    ];
-  };
+  services.nix-daemon.enable = true;
 
   environment = {
-    shells = with pkgs; [zsh]; # Default Shell
-    variables = {
-      EDITOR = "${vars.editor}";
-      VISUAL = "${vars.editor}";
-    };
     systemPackages = with pkgs; [
-      alacritty
-      alejandra
-      fzf
-      git
-      gnupg
-      htop
-      mosh
-      neovim
-      jq
-      tailscale
-      wireguard-go
-      wireguard-tools
-      fd
-      ripgrep
-      # https://discourse.nixos.org/t/firefox-unsupported-on-aarch64-darwin/18388
-      # firefox
-      obsidian
-      _1password # export NIXPKGS_ALLOW_UNFREE=1
+      gnumake
+      coreutils
+      cmake
     ];
+
+    variables = import ./environment/variables.nix;
+    shells = [pkgs.zsh];
   };
 
-  programs = {
-    zsh.enable = true; # Shell
-  };
-
-  services = {
-    nix-daemon.enable = true; # Auto-Upgrade Daemon
+  networking = let
+    name = "faamac";
+  in {
+    computerName = name;
+    hostName = name;
+    localHostName = name;
   };
 
   homebrew = {
@@ -71,20 +38,6 @@
     ];
     casks = [
     ];
-  };
-
-  nix = {
-    package = pkgs.nix;
-    gc = {
-      # Garbage Collection
-      automatic = true;
-      interval.Day = 7;
-      options = "--delete-older-than 7d";
-    };
-    extraOptions = ''
-      auto-optimise-store = true
-      experimental-features = nix-command flakes
-    '';
   };
 
   system = {
@@ -125,7 +78,7 @@
       # Needs to be writable by the user so that home-manager can symlink into it
       if ! test -d "$applications"; then
           mkdir -p "$applications"
-          chown ${vars.user}: "$applications"
+          chown mccurdyc: "$applications"
           chmod u+w "$applications"
       fi
 
@@ -148,12 +101,7 @@
               " 1>/dev/null
           done
     '';
-    stateVersion = 4;
-  };
 
-  home-manager.users.${vars.user} = {
-    home = {
-      stateVersion = "23.05";
-    };
+    stateVersion = 4;
   };
 }

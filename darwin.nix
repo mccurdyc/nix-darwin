@@ -1,25 +1,25 @@
-name: {
-  user,
-  inputs,
-  nixpkgs,
-  lib,
-  home-manager,
-  system,
-  darwin,
-}:
+name: { user
+      , inputs
+      , nixpkgs
+      , lib
+      , home-manager
+      , system
+      , darwin
+      ,
+      }:
 darwin.lib.darwinSystem {
   system = "aarch64-darwin";
 
-  inputs = {inherit user inputs nixpkgs lib home-manager system darwin;};
+  inputs = { inherit user inputs nixpkgs lib home-manager system darwin; };
 
   # nix-darwin level modules
   modules = [
-    ./modules/nix.nix
-    ./modules/environment.nix
-    ./modules/zsh.nix
     ./modules/darwin.nix
+    ./modules/environment.nix
+    ./modules/nix.nix
     ./modules/skhd.nix
     ./modules/yabai.nix
+    ./modules/zsh.nix
 
     # The home-manager nix-darwin module
     home-manager.darwinModules.home-manager
@@ -38,9 +38,10 @@ darwin.lib.darwinSystem {
             ./home-modules/direnv.nix
             ./home-modules/git.nix
             ./home-modules/gpg.nix
-            ./home-modules/zsh.nix
-            ./home-modules/packages.nix
             ./home-modules/nvim/default.nix
+            ./home-modules/packages.nix
+            ./home-modules/tmux.nix
+            ./home-modules/zsh.nix
           ];
         };
 

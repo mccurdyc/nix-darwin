@@ -1,15 +1,16 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}: let
+{ config
+, pkgs
+, lib
+, inputs
+, ...
+}:
+let
   pkgs-unstable = import inputs.nixpkgs-unstable {
     system = pkgs.system;
     config.allowUnfree = true;
   };
-in {
+in
+{
   home.stateVersion = "22.05";
 
   home.packages =
@@ -27,7 +28,7 @@ in {
       openssl
       tmux
     ])
-    ++ (with pkgs-unstable; [obsidian]);
+    ++ (with pkgs-unstable; [ obsidian ]);
 
   # Need to run `vale sync` to install styles.
   home.sessionPath = [

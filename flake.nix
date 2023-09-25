@@ -19,51 +19,58 @@
     };
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    home-manager,
-    flake-utils,
-    darwin,
-    ...
-  }: let
-    mkNixos = import ./nixos.nix;
-    mkDarwin = import ./darwin.nix;
+  outputs =
+    inputs @ { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , home-manager
+    , flake-utils
+    , darwin
+    , ...
+    }:
+    let
+      mkNixos = import ./nixos.nix;
+      mkDarwin = import ./darwin.nix;
 
-    user = "mccurdyc";
-  in
+      user = "mccurdyc";
+    in
     rec {
-      nixosConfigurations = let
-        system = "x86_64-linux";
-      in {
-        fgnix = mkNixos "fgnix" {
-          inherit user inputs nixpkgs home-manager system;
+      nixosConfigurations =
+        let
+          system = "x86_64-linux";
+        in
+        {
+          fgnix = mkNixos "fgnix" {
+            inherit user inputs nixpkgs home-manager system;
+          };
+
+          nuc = mkNixos "nuc" {
+            inherit user inputs nixpkgs home-manager system;
+          };
         };
 
-        nuc = mkNixos "nuc" {
-          inherit user inputs nixpkgs home-manager system;
+      darwinConfigurations =
+        let
+          system = "aarch64-darwin";
+        in
+        {
+          faamac = mkDarwin "faamac" {
+            inherit (nixpkgs) lib;
+            inherit user inputs nixpkgs home-manager system darwin;
+          };
         };
-      };
-
-      darwinConfigurations = let
-        system = "aarch64-darwin";
-      in {
-        faamac = mkDarwin "faamac" {
-          inherit (nixpkgs) lib;
-          inherit user inputs nixpkgs home-manager system darwin;
-        };
-      };
     }
     // (flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {inherit system;};
-      in {
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in
+      {
         formatter = pkgs.alejandra;
 
         devShells = {
           default = pkgs.mkShell {
-            buildInputs = with pkgs; [nil sumneko-lua-language-server cmake-language-server];
+            buildInputs = with pkgs; [ nil sumneko-lua-language-server cmake-language-server ];
           };
         };
       }

@@ -722,15 +722,10 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter",
         config = function()
             require("nvim-treesitter.configs").setup {
+                -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
                 -- NixOS is a RO filesystem, we don't want nvim trying to install things for us.
                 -- ensure_installed = {"comment", "lua", "rust", "yaml", "go", "hcl", "bash"},
-                -- :TSInstall comment
-                -- :TSInstall lua
-                -- :TSInstall rust
-                -- :TSInstall yaml
-                -- :TSInstall go
-                -- :TSInstall hcl
-                -- :TSInstall bash
+                -- :TSInstall comment lua rust yaml go hcl bash cue gitcommit json make nix terraform toml typescript
                 sync_install = false,
                 auto_install = false,
                 indent = {enable = true},

@@ -107,7 +107,7 @@ if not vim.loop.fs_stat(lazypath) then
     -- stylua: ignore
     vim.fn.system({
         "git", "clone", "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath
+        "git@github.com:folke/lazy.nvim.git", "--branch=stable", lazypath
     })
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
@@ -679,35 +679,6 @@ require("lazy").setup({
                 numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
                 linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
                 word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
-                keymaps = {
-                    -- Default keymap options
-                    noremap = true,
-                    ["n ]c"] = {
-                        expr = true,
-                        '&diff ? \']c\' : \'<cmd>lua require"gitsigns.actions".next_hunk()<CR>\''
-                    },
-                    ["n [c"] = {
-                        expr = true,
-                        '&diff ? \'[c\' : \'<cmd>lua require"gitsigns.actions".prev_hunk()<CR>\''
-                    },
-                    ["n <leader>hs"] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-                    ["v <leader>hs"] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-                    ["n <leader>hu"] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-                    ["n <leader>hr"] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-                    ["v <leader>hr"] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-                    ["n <leader>hR"] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-                    ["n <leader>hp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-                    ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
-                    ["n <leader>hS"] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
-                    ["n <leader>hU"] = '<cmd>lua require"gitsigns".reset_buffer_index()<CR>',
-                    -- Text objects
-                    ["o ih"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-                    ["x ih"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-
-                    -- TODO - WRONG PLACE
-                    -- dap-go - https://github.com/leoluz/nvim-dap-go#mappings
-                    ["n <leader>td"] = '<cmd>lua require"dap-go".debug_test()<CR>'
-                },
                 watch_gitdir = {interval = 1000, follow_files = true},
                 attach_to_untracked = true,
                 current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
@@ -733,60 +704,14 @@ require("lazy").setup({
             }
         end
     }, {
-        "TimUntersberger/neogit",
-        config = function()
-            require("neogit").setup {
-                disable_signs = true,
-                disable_context_highlighting = false,
-                disable_insert_on_commit = false,
-                disable_commit_confirmation = true,
-                auto_refresh = true,
-                disable_builtin_notifications = false,
-                commit_popup = {kind = "split"},
-                -- customize displayed signs
-                signs = {
-                    -- { CLOSED, OPENED }
-                    section = {">", "v"},
-                    item = {">", "v"},
-                    hunk = {"", ""}
-                },
-                -- Setting any section to `false` will make the section not render at all
-                sections = {
-                    untracked = {folded = true},
-                    unstaged = {folded = true},
-                    staged = {folded = false},
-                    stashes = {folded = true},
-                    unpulled = {folded = true},
-                    unmerged = {folded = false},
-                    recent = {folded = true}
-                },
-                integrations = {
-                    -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
-                    -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
-                    --
-                    -- Requires you to have `sindrets/diffview.nvim` installed.
-                    -- use {
-                    --   'TimUntersberger/neogit',
-                    --   requires = {
-                    --     'nvim-lua/plenary.nvim',
-                    --     'sindrets/diffview.nvim'
-                    --   }
-                    -- }
-                    --
-                    diffview = true
-                },
-                -- override/add mappings
-                mappings = {
-                    -- modify status buffer mappings
-                    status = {
-                        -- Adds a mapping with "B" as key that does the "BranchPopup" command
-                        ["B"] = "BranchPopup",
-                        -- Removes the default mapping of "s"
-                        ["s"] = ""
-                    }
-                }
-            }
-        end
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim", -- required
+            "nvim-telescope/telescope.nvim", -- optional
+            "sindrets/diffview.nvim", -- optional
+            "ibhagwan/fzf-lua" -- optional
+        },
+        config = function() require("neogit").setup {} end
     }, {
         "hashivim/vim-terraform",
         config = function()
@@ -799,6 +724,13 @@ require("lazy").setup({
             require("nvim-treesitter.configs").setup {
                 -- NixOS is a RO filesystem, we don't want nvim trying to install things for us.
                 -- ensure_installed = {"comment", "lua", "rust", "yaml", "go", "hcl", "bash"},
+                -- :TSInstall comment
+                -- :TSInstall lua
+                -- :TSInstall rust
+                -- :TSInstall yaml
+                -- :TSInstall go
+                -- :TSInstall hcl
+                -- :TSInstall bash
                 sync_install = false,
                 auto_install = false,
                 indent = {enable = true},

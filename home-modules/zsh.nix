@@ -1,7 +1,6 @@
-{
-  isDarwin,
-  pkgs,
-  ...
+{ isDarwin
+, pkgs
+, ...
 }: {
   programs.zsh = {
     enable = true;
@@ -65,24 +64,6 @@
     };
     profileExtra = "";
     dotDir = ".config/zsh";
-    envExtra = ''
-      # For commit signing on the iPad
-      export GPG_TTY=$(tty)
-
-      export EDITOR="$(which nvim)"
-      export TERMINAL="$(which alacritty)"
-      export TERM="xterm-256color"
-      export BROWSER="$(which firefox)"
-
-      export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude vendor --exclude .git'
-      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-      export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-
-      export FASTLY_CHEF_USERNAME="cmccurdy"
-
-      export INFRA_SKIP_VERSION_CHECK=true
-    '';
-    sessionVariables = {};
     loginExtra = "";
     initExtraFirst = ''
     '';
@@ -102,9 +83,6 @@
       # https://github.com/Aloxaf/fzf-tab/issues/193#issuecomment-784722265
       setopt globdots
 
-      if [ -x "$(command -v direnv)" ]; then
-             	eval "$(direnv hook zsh)"
-      fi
       eval "$(starship init zsh)"
 
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
@@ -113,18 +91,6 @@
       source ${pkgs.fzf}/share/fzf/completion.zsh
       # NOTE: I had issues with zsh-vi-mode overwriting ^R
       source ${pkgs.fzf}/share/fzf/key-bindings.zsh
-
-      if [ -x "$(command -v stern)" ]; then
-             	source <(stern --completion=zsh)
-      fi
-
-      if [ -x "$(command -v fastly)" ]; then
-             	eval "$(fastly --completion-script-zsh)"
-      fi
-
-      if [ -x "$(command -v keychain)" ]; then
-             	eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
-      fi
 
       # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
       autoload bashcompinit && bashcompinit

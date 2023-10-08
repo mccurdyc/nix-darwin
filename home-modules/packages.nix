@@ -1,11 +1,10 @@
-{
-  custom-packages,
-  config,
-  lib,
-  pkgs,
-  pkgs-unstable,
-  inputs,
-  ...
+{ custom-packages
+, config
+, lib
+, pkgs
+, pkgs-unstable
+, inputs
+, ...
 }: {
   home.packages = with pkgs;
     [
@@ -76,5 +75,6 @@
     ]
     ++ (with pkgs-unstable; [
       obsidian
+      spotify
     ]);
 }

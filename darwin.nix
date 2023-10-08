@@ -1,16 +1,16 @@
-name: {
-  user,
-  inputs,
-  nixpkgs,
-  lib,
-  home-manager,
-  system,
-  darwin,
+{ inputs
+, nixpkgs
+, nixpkgs-unstable
+, lib
+, home-manager
+, system
+, darwin
+, vars
 }:
 darwin.lib.darwinSystem {
-  system = "aarch64-darwin";
+  inherit system;
 
-  inputs = {inherit user inputs nixpkgs lib home-manager system darwin;};
+  inputs = { inherit inputs nixpkgs nixpkgs-unstable lib home-manager system darwin vars; };
 
   # nix-darwin level modules
   modules = [
@@ -24,33 +24,32 @@ darwin.lib.darwinSystem {
     # The home-manager nix-darwin module
     home-manager.darwinModules.home-manager
     {
-      users.users.${user} = {
-        name = "${user}";
-        home = "/Users/${user}";
+      users.users.${vars.user} = {
+        name = "${vars.user}";
+        home = "/Users/${vars.user}";
       };
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.${user} = {
+        users.${vars.user} = {
           imports = [
             ./home-modules/alacritty.nix
-            ./home-modules/darwin.nix
             ./home-modules/direnv.nix
             ./home-modules/git.nix
             ./home-modules/gpg.nix
+            ./home-modules/home.nix
             ./home-modules/nvim/default.nix
             ./home-modules/packages.nix
             ./home-modules/tmux.nix
+            ./home-modules/ssh.nix # TODO
             ./home-modules/zsh.nix
           ];
         };
 
         # Arguments that are exposed to every `home-module`.
         extraSpecialArgs = {
-          pkgs-unstable = import inputs.nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
+          pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+          currentSystemName = vars.name;
           currentSystem = system;
           isDarwin = true;
           inherit inputs;
@@ -61,12 +60,12 @@ darwin.lib.darwinSystem {
     # Arguments that are exposed to every `module`.
     {
       config._module.args = {
-        currentSystemName = name;
+        pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+        name = "faamac";
+        currentSystemName = vars.name;
         currentSystem = system;
-        pkgs-unstable = import inputs.nixpkgs-unstable {
-          inherit system;
-          config.allowUnfree = true;
-        };
+        isDarwin = true;
+        inherit vars;
       };
     }
   ];

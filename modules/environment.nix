@@ -1,22 +1,27 @@
-{
-  pkgs,
-  lib,
-  currentSystemName,
-  ...
+{ pkgs
+, lib
+, ...
 }: {
   environment = {
-    shells = with pkgs; [zsh]; # Default Shell
+    shells = with pkgs; [ zsh ]; # Default Shell
 
     systemPackages = with pkgs;
       [
         _1password # export NIXPKGS_ALLOW_UNFREE=1
         alacritty
+        curl
+        git
+        gnumake
+        coreutils
+        cmake
         gnupg
         mosh
         neovim
         tailscale
+        wget
         wireguard-go
         wireguard-tools
+        zsh
         (writeShellScriptBin "docker-stop-all" ''
           docker stop $(docker ps -q)
           docker system prune -f
@@ -26,13 +31,13 @@
           docker rmi -f $(docker images -a -q)
           docker volume prune -f
         '')
-      ]
-      ++ lib.optionals (currentSystemName == "foobar") [
       ];
 
     variables = import ./environment/variables.nix;
 
-    # required for zsh autocomplete
-    pathsToLink = ["/share/zsh"];
+    pathsToLink = [
+      "/share/zsh" # required for zsh autocomplete
+      "/share/nix-direnv"
+    ];
   };
 }

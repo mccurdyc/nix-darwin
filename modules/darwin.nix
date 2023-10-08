@@ -1,30 +1,12 @@
-{
-  user,
-  config,
-  pkgs,
-  lib,
-  ...
+{ vars
+, config
+, pkgs
+, lib
+, ...
 }: {
   services.nix-daemon.enable = true;
 
-  environment = {
-    systemPackages = with pkgs; [
-      gnumake
-      coreutils
-      cmake
-    ];
-
-    variables = import ./environment/variables.nix;
-    shells = [pkgs.zsh];
-  };
-
-  networking = let
-    name = "faamac";
-  in {
-    computerName = name;
-    hostName = name;
-    localHostName = name;
-  };
+  networking.computerName = vars.name;
 
   homebrew = {
     enable = true;

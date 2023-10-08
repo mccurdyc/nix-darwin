@@ -19,51 +19,99 @@
     };
   };
 
-  outputs = inputs @ {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    home-manager,
-    flake-utils,
-    darwin,
-    ...
-  }: let
-    mkNixos = import ./nixos.nix;
-    mkDarwin = import ./darwin.nix;
+  outputs =
+    inputs @ { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , home-manager
+    , flake-utils
+    , darwin
+    , ...
+    }:
+    let
+      mkNixos = import ./nixos.nix;
+      mkDarwin = import ./darwin.nix;
 
-    user = "mccurdyc";
-  in
+      user = "mccurdyc";
+      hashedPassword = "$6$d5uf.fUvF9kZ8iwH$/Bm6m3Hk82rj2V4d0pba1u6vCXIh/JLURv6Icxf1ok0heX1oK6LwSIXSeIOPriBLBnpq3amOV.pWLas0oPeCw1";
+      authorizedKeys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO2cxynJf1jRyVzsOjqRYVkffIV2gQwNc4Cq4xMTcsmN"
+      ];
+    in
     rec {
-      nixosConfigurations = let
-        system = "x86_64-linux";
-      in {
-        fgnix = mkNixos "fgnix" {
-          inherit user inputs nixpkgs home-manager system;
+      nixosConfigurations =
+        let
+          system = "x86_64-linux";
+        in
+        {
+          fgnix = mkNixos {
+            vars = {
+              inherit user hashedPassword authorizedKeys;
+
+              name = "fgnix";
+              hardware = "gce-x86_64-vm";
+              additionalPackages = with nixpkgs; [
+                awscli2
+                infra
+                kubectl
+                kubernetes-helm
+                kubie
+                ssm-session-manager-plugin
+                ruby_3_1
+                terraform-docs
+                terraform-ls
+                tflint
+                wireguard-tools
+              ];
+            };
+
+            inherit inputs nixpkgs nixpkgs-unstable home-manager system;
+          };
+
+          nuc = mkNixos {
+            vars = {
+              inherit user hashedPassword authorizedKeys;
+
+              name = "nuc";
+              hardware = "x86_64";
+            };
+
+            inherit inputs nixpkgs nixpkgs-unstable home-manager system;
+          };
         };
 
-        nuc = mkNixos "nuc" {
-          inherit user inputs nixpkgs home-manager system;
-        };
-      };
+      darwinConfigurations =
+        let
+          system = "aarch64-darwin";
+        in
+        {
+          faamac = mkDarwin {
+            vars = {
+              inherit user;
 
-      darwinConfigurations = let
-        system = "aarch64-darwin";
-      in {
-        faamac = mkDarwin "faamac" {
-          inherit (nixpkgs) lib;
-          inherit user inputs nixpkgs home-manager system darwin;
+              name = "faamac";
+              additionalPackages = with nixpkgs-unstable; [
+                obsidian
+                spotify
+              ];
+            };
+
+            inherit (nixpkgs) lib;
+            inherit inputs nixpkgs nixpkgs-unstable home-manager system darwin;
+          };
         };
-      };
     }
     // (flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = import nixpkgs {inherit system;};
-      in {
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in
+      {
         formatter = pkgs.alejandra;
 
         devShells = {
           default = pkgs.mkShell {
-            buildInputs = with pkgs; [nil sumneko-lua-language-server cmake-language-server];
+            buildInputs = with pkgs; [ nil sumneko-lua-language-server cmake-language-server ];
           };
         };
       }

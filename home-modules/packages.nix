@@ -1,11 +1,9 @@
-{
-  custom-packages,
-  config,
-  lib,
-  pkgs,
-  pkgs-unstable,
-  inputs,
-  ...
+{ vars
+, config
+, lib
+, pkgs
+, inputs
+, ...
 }: {
   home.packages = with pkgs;
     [
@@ -50,10 +48,8 @@
       nodejs
       openssl
       pinentry-curses
-      skhd
       poetry
       python310Packages.grip
-      # python310Packages.pip - use "python -m ensurepip --default-pip"
       python3Full
       qrencode
       ripgrep
@@ -73,9 +69,5 @@
       watch
       wdiff
       yamllint
-    ]
-    ++ (with pkgs-unstable; [
-      obsidian
-      spotify
-    ]);
+    ] ++ lib.lists.optionals (builtins.length vars.additionalPackages > 0) vars.additionalPackages;
 }

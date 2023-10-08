@@ -1,19 +1,17 @@
-name: {
-  custom-packages,
-  inputs,
-  nixpkgs,
-  home-manager,
-  system,
-  user,
+{ inputs
+, nixpkgs
+, home-manager
+, system
+, vars
 }:
 nixpkgs.lib.nixosSystem rec {
   inherit system;
 
+  inputs = { inherit inputs nixpkgs home-manager system vars; };
+
   # NixOS level modules
   modules = [
-    # inputs.union.nixosModules.hubble
-    ./hardware/${name}.nix
-    ./machines/${name}.nix
+    "./hardware/${vars.hardware}.nix"
     ./modules/environment.nix
     ./modules/fonts.nix
     ./modules/misc.nix
@@ -30,32 +28,25 @@ nixpkgs.lib.nixosSystem rec {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        users.${user} = {
+        users.${vars.user} = {
           # Home-manager level modules
           imports = [
-            ./home-modules/bat.nix
-            ./home-modules/direnv.nix
-            ./home-modules/git.nix
-            ./home-modules/gpg.nix
-            ./home-modules/nixos-misc.nix
+            ./home-modules/direnv.nix # TODO
+            ./home-modules/git.nix # TODO
+            ./home-modules/gpg.nix # TODO
+            ./home-modules/ssh.nix # TODO
             ./home-modules/packages.nix
+            ./home-modules/home.nix
             ./home-modules/tmux.nix
             ./home-modules/zsh.nix
           ];
         };
         # Arguments that are exposed to every `home-module`.
         extraSpecialArgs = {
-          pkgs-unstable = import inputs.nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
-          pkgs-kitty = import inputs.nixpkgs-kitty {
-            inherit system;
-            config.allowUnfree = true;
-          };
-          inherit custom-packages;
-          currentSystemName = name;
+          currentSystemName = vars.name;
           currentSystem = system;
+          pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+
           isDarwin = false;
           inherit inputs;
         };
@@ -65,12 +56,9 @@ nixpkgs.lib.nixosSystem rec {
     # Arguments that are exposed to every `module`.
     {
       config._module.args = {
-        currentSystemName = name;
+        currentSystemName = vars.name;
         currentSystem = system;
-        pkgs-unstable = import inputs.nixpkgs-unstable {
-          inherit system;
-          config.allowUnfree = true;
-        };
+        pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
       };
     }
   ];

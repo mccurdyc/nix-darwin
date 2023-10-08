@@ -1,6 +1,7 @@
-{ isDarwin
-, pkgs
-, ...
+{
+  isDarwin,
+  pkgs,
+  ...
 }: {
   programs.zsh = {
     enable = true;

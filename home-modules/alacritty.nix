@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   programs.alacritty = {
     enable = true;
     settings = {
@@ -10,7 +10,7 @@
 
       font = {
         normal.family = "FiraCode Nerd Font";
-        bold = { style = "Bold"; };
+        bold = {style = "Bold";};
         size = 22;
       };
 
@@ -62,12 +62,30 @@
         };
 
         indexed_colors = [
-          { index = 16; color = "0xf99157"; }
-          { index = 17; color = "0xd27b53"; }
-          { index = 18; color = "0x393939"; }
-          { index = 19; color = "0x515151"; }
-          { index = 20; color = "0xa09f93"; }
-          { index = 21; color = "0xe8e6df"; }
+          {
+            index = 16;
+            color = "0xf99157";
+          }
+          {
+            index = 17;
+            color = "0xd27b53";
+          }
+          {
+            index = 18;
+            color = "0x393939";
+          }
+          {
+            index = 19;
+            color = "0x515151";
+          }
+          {
+            index = 20;
+            color = "0xa09f93";
+          }
+          {
+            index = 21;
+            color = "0xe8e6df";
+          }
         ];
       };
     };

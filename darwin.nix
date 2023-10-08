@@ -1,16 +1,16 @@
-name: { user
-      , inputs
-      , nixpkgs
-      , lib
-      , home-manager
-      , system
-      , darwin
-      ,
-      }:
+name: {
+  user,
+  inputs,
+  nixpkgs,
+  lib,
+  home-manager,
+  system,
+  darwin,
+}:
 darwin.lib.darwinSystem {
   system = "aarch64-darwin";
 
-  inputs = { inherit user inputs nixpkgs lib home-manager system darwin; };
+  inputs = {inherit user inputs nixpkgs lib home-manager system darwin;};
 
   # nix-darwin level modules
   modules = [

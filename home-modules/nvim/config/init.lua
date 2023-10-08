@@ -121,13 +121,22 @@ require("lazy").setup({
             vim.cmd([[colorscheme base16-eighties-minimal]])
         end
     }, "tpope/vim-fugitive", "tpope/vim-rhubarb", "tomtom/tcomment_vim",
-    "nvim-lua/plenary.nvim", "lukas-reineke/indent-blankline.nvim" --[[{
-	      "nvim-telescope/telescope-fzf-native.nvim",
-	      dependencies = {
-			    "nvim-telescope/telescope.nvim",
-	      },
-	    },
-	    ]] , {
+    "nvim-lua/plenary.nvim", {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        opts = {},
+        config = function()
+            require("ibl").setup()
+            require("ibl").overwrite {
+                indent = {highlight = {"LineNr"}, char = "▎"},
+                whitespace = {
+                    highlight = {"LineNr"},
+                    remove_blankline_trail = false
+                },
+                scope = {enabled = false}
+            }
+        end
+    }, {
         "ray-x/go.nvim",
         dependencies = { -- optional packages
             "ray-x/guihua.lua", "neovim/nvim-lspconfig",

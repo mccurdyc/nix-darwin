@@ -6,12 +6,11 @@
 , system
 , darwin
 , vars
-, additionalPackages ? [ ]
 }:
 darwin.lib.darwinSystem {
   inherit system;
 
-  inputs = { inherit inputs additionalPackages nixpkgs nixpkgs-unstable lib home-manager system darwin vars; };
+  inputs = { inherit inputs nixpkgs nixpkgs-unstable lib home-manager system darwin vars; };
 
   # nix-darwin level modules
   modules = [
@@ -42,9 +41,15 @@ darwin.lib.darwinSystem {
             ./home-modules/nvim/default.nix
             ./home-modules/packages.nix
             ./home-modules/tmux.nix
-            ./home-modules/ssh.nix # TODO
+            ./home-modules/ssh.nix
             ./home-modules/zsh.nix
           ];
+
+          config.modules =
+            {
+              packages.enable = true;
+              packages.additionalPackages = ./. + "/hosts/${vars.name}.nix";
+            };
         };
 
         # Arguments that are exposed to every `home-module`.
@@ -53,7 +58,6 @@ darwin.lib.darwinSystem {
           currentSystemName = vars.name;
           currentSystem = system;
           isDarwin = true;
-          inherit additionalPackages;
         };
       };
     }

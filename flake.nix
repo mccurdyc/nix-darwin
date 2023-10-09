@@ -89,7 +89,6 @@
           faamac = mkDarwin {
             vars = {
               inherit user;
-
               name = "faamac";
             };
 

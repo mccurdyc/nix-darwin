@@ -3,8 +3,10 @@
 , lib
 , pkgs
 , inputs
+, additionalPackages ? [ ]
 , ...
-}: {
+}:
+{
   home.packages = with pkgs;
     [
       _1password
@@ -69,5 +71,5 @@
       watch
       wdiff
       yamllint
-    ] ++ lib.lists.optionals (builtins.length vars.additionalPackages > 0) vars.additionalPackages;
+    ] ++ additionalPackages;
 }

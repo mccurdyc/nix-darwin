@@ -6,11 +6,12 @@
 , system
 , darwin
 , vars
+, additionalPackages ? [ ]
 }:
 darwin.lib.darwinSystem {
   inherit system;
 
-  inputs = { inherit inputs nixpkgs nixpkgs-unstable lib home-manager system darwin vars; };
+  inputs = { inherit inputs additionalPackages nixpkgs nixpkgs-unstable lib home-manager system darwin vars; };
 
   # nix-darwin level modules
   modules = [
@@ -52,7 +53,7 @@ darwin.lib.darwinSystem {
           currentSystemName = vars.name;
           currentSystem = system;
           isDarwin = true;
-          inherit inputs;
+          inherit additionalPackages;
         };
       };
     }
@@ -61,7 +62,6 @@ darwin.lib.darwinSystem {
     {
       config._module.args = {
         pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-        name = "faamac";
         currentSystemName = vars.name;
         currentSystem = system;
         isDarwin = true;

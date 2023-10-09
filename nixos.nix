@@ -1,13 +1,14 @@
-{ inputs
-, nixpkgs
-, home-manager
-, system
-, vars
+{
+  inputs,
+  nixpkgs,
+  home-manager,
+  system,
+  vars,
 }:
 nixpkgs.lib.nixosSystem rec {
   inherit system;
 
-  inputs = { inherit inputs nixpkgs home-manager system vars; };
+  inputs = {inherit inputs nixpkgs home-manager system vars;};
 
   # NixOS level modules
   modules = [
@@ -45,7 +46,10 @@ nixpkgs.lib.nixosSystem rec {
         extraSpecialArgs = {
           currentSystemName = vars.name;
           currentSystem = system;
-          pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+          pkgs-unstable = import inputs.nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
 
           isDarwin = false;
           inherit inputs;
@@ -58,7 +62,10 @@ nixpkgs.lib.nixosSystem rec {
       config._module.args = {
         currentSystemName = vars.name;
         currentSystem = system;
-        pkgs-unstable = import inputs.nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+        pkgs-unstable = import inputs.nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
       };
     }
   ];

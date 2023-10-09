@@ -1,8 +1,8 @@
-{ inputs
-, system
-, ...
-}:
 {
+  inputs,
+  system,
+  ...
+}: {
   home.stateVersion = "23.05";
 
   # Need to run `vale sync` to install styles.

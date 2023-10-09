@@ -1,19 +1,19 @@
-{ vars
-, config
-, lib
-, pkgs
-, inputs
-, ...
+{
+  vars,
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
 }:
 with lib; let
   cfg = config.modules.packages;
-in
-{
+in {
   options.modules.packages = {
     enable = mkEnableOption "packages";
     additionalPackages = mkOption {
       type = types.listOf types.package;
-      default = [ ];
+      default = [];
     };
     basePackages = mkOption {
       type = types.listOf types.package;
@@ -83,7 +83,8 @@ in
       ];
     };
   };
-  config = mkIf cfg.enable
+  config =
+    mkIf cfg.enable
     {
       home.packages = with pkgs;
         cfg.basePackages ++ cfg.additionalPackages;

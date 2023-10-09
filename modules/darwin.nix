@@ -1,8 +1,9 @@
-{ vars
-, config
-, pkgs
-, lib
-, ...
+{
+  vars,
+  config,
+  pkgs,
+  lib,
+  ...
 }: {
   services.nix-daemon.enable = true;
 

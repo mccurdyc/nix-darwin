@@ -1,9 +1,10 @@
-{ inputs
-, pkgs
-, config
-, pkgs-unstable
-, lib
-, ...
+{
+  inputs,
+  pkgs,
+  config,
+  pkgs-unstable,
+  lib,
+  ...
 }: {
   security.sudo.wheelNeedsPassword = false;
 
@@ -13,7 +14,7 @@
     autoPrune = {
       enable = true;
       dates = "weekly";
-      flags = [ "--all" ];
+      flags = ["--all"];
     };
   };
 
@@ -28,7 +29,7 @@
 
   # if you also want support for flakes
   nixpkgs.overlays = [
-    (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
+    (self: super: {nix-direnv = super.nix-direnv.override {enableFlakes = true;};})
   ];
 
   # https://fzakaria.com/2020/09/17/tailscale-is-magic-even-more-so-with-nixos.html

@@ -32,16 +32,19 @@ nixpkgs.lib.nixosSystem rec {
         users.${vars.user} = {
           # Home-manager level modules
           imports = [
-            ./home-modules/direnv.nix # TODO
-            ./home-modules/git.nix # TODO
-            ./home-modules/gpg.nix # TODO
-            ./home-modules/ssh.nix # TODO
-            ./home-modules/packages.nix
+            ./home-modules/direnv.nix
+            ./home-modules/git.nix
+            ./home-modules/gpg.nix
             ./home-modules/home.nix
+            ./home-modules/packages.nix
+            ./home-modules/ssh.nix
             ./home-modules/tmux.nix
             ./home-modules/zsh.nix
+
+            ./hosts/${vars.name}.nix # NOTE - this works even though the linter complains.
           ];
         };
+
         # Arguments that are exposed to every `home-module`.
         extraSpecialArgs = {
           currentSystemName = vars.name;

@@ -4,7 +4,6 @@
     additionalPackages = with pkgs-unstable; [
       obsidian
       spotify
-      infra
     ];
   };
 }

@@ -49,20 +49,6 @@
             hardware = "gce-x86_64-vm";
           };
 
-          additionalPackages = with nixpkgs; [
-            awscli2
-            infra
-            kubectl
-            kubernetes-helm
-            kubie
-            ssm-session-manager-plugin
-            ruby_3_1
-            terraform-docs
-            terraform-ls
-            tflint
-            wireguard-tools
-          ];
-
           inherit inputs nixpkgs nixpkgs-unstable home-manager system;
         };
 

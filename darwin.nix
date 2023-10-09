@@ -41,10 +41,11 @@ darwin.lib.darwinSystem {
             ./home-modules/home.nix
             ./home-modules/nvim/default.nix
             ./home-modules/packages.nix
-            ./home-modules/tmux.nix
             ./home-modules/ssh.nix
+            ./home-modules/tmux.nix
             ./home-modules/zsh.nix
-            ./hosts/${vars.name}.nix
+
+            ./hosts/${vars.name}.nix # NOTE - this works even though the linter complains.
           ];
         };
 

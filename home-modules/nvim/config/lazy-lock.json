@@ -36,5 +36,6 @@
   "vim-fugitive": { "branch": "master", "commit": "99db68d9b3304580bd383da7aaee05c7a954a344" },
   "vim-rhubarb": { "branch": "master", "commit": "ee69335de176d9325267b0fd2597a22901d927b1" },
   "vim-snippets": { "branch": "master", "commit": "ccc2fa1529d372f7ac16d5eb07a385a72b50e05d" },
-  "vim-terraform": { "branch": "master", "commit": "d37ae7e7828aa167877e338dea5d4e1653ed3eb1" }
+  "vim-terraform": { "branch": "master", "commit": "d37ae7e7828aa167877e338dea5d4e1653ed3eb1" },
+  "yaml.nvim": { "branch": "main", "commit": "400b2edb001b81f41be69bdcbe09a5ed23886074" }
 }

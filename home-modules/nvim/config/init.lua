@@ -68,6 +68,8 @@ opt("splitright", true)
 opt("showmode", false)
 opt("foldminlines", 1)
 opt("foldmethod", "indent")
+opt("foldlevelstart", 20)
+opt("foldenable", "true")
 
 local map = vim.api.nvim_set_keymap
 local opts = {noremap = true}
@@ -754,6 +756,12 @@ require("lazy").setup({
             local g = vim.g
             g.terraform_fmt_on_save = 1
         end
+    }, {
+        "cuducos/yaml.nvim",
+        ft = {"yaml"}, -- optional
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim" -- optional
+        }
     }, {
         "nvim-treesitter/nvim-treesitter",
         config = function()

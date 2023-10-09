@@ -23,6 +23,9 @@ in {
         bat
         cachix
         crane
+        cue
+        cuelsp
+        cuetools
         dig
         docker
         docker-compose
@@ -43,6 +46,7 @@ in {
         hadolint
         htop
         jq
+        k6
         lsof
         lua53Packages.luacheck
         luaformatter
@@ -77,6 +81,7 @@ in {
         trivy
         unzip
         vale
+        viceroy
         watch
         wdiff
         yamllint

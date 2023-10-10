@@ -1,14 +1,14 @@
-{
-  inputs,
-  nixpkgs,
-  home-manager,
-  system,
-  vars,
+{ inputs
+, lib
+, nixpkgs
+, home-manager
+, system
+, vars
 }:
-nixpkgs.lib.nixosSystem rec {
+nixpkgs.lib.nixosSystem {
   inherit system;
 
-  inputs = {inherit inputs nixpkgs home-manager system vars;};
+  inputs = { inherit inputs nixpkgs home-manager system vars; };
 
   # NixOS level modules
   modules = [

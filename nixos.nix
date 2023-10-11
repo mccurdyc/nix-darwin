@@ -47,15 +47,13 @@ nixpkgs.lib.nixosSystem {
 
         # Arguments that are exposed to every `home-module`.
         extraSpecialArgs = {
-          currentSystemName = vars.name;
-          currentSystem = system;
+          inherit inputs vars;
           pkgs-unstable = import inputs.nixpkgs-unstable {
             inherit system;
             config.allowUnfree = true;
           };
 
           isDarwin = false;
-          inherit inputs;
         };
       };
     }
@@ -64,8 +62,6 @@ nixpkgs.lib.nixosSystem {
     {
       config._module.args = {
         inherit vars;
-        currentSystemName = vars.name;
-        currentSystem = system;
         pkgs-unstable = import inputs.nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;

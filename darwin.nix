@@ -51,12 +51,11 @@ darwin.lib.darwinSystem {
 
         # Arguments that are exposed to every `home-module`.
         extraSpecialArgs = {
+          inherit inputs vars;
           pkgs-unstable = import inputs.nixpkgs-unstable {
             inherit system;
             config.allowUnfree = true;
           };
-          currentSystemName = vars.name;
-          currentSystem = system;
           isDarwin = true;
         };
       };
@@ -65,14 +64,12 @@ darwin.lib.darwinSystem {
     # Arguments that are exposed to every `module`.
     {
       config._module.args = {
+        inherit vars;
         pkgs-unstable = import inputs.nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;
         };
-        currentSystemName = vars.name;
-        currentSystem = system;
         isDarwin = true;
-        inherit vars;
       };
     }
   ];

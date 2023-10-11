@@ -6,7 +6,7 @@
     newSession = true;
     keyMode = "vi";
     customPaneNavigationAndResize = true;
-    terminal = "xterm-256color";
+    terminal = "screen-256color";
     shortcut = "a";
     escapeTime = 1;
     plugins = [
@@ -31,8 +31,8 @@
       # necessary to reload shell config changes
       set -g default-shell "${pkgs.zsh}/bin/zsh"
 
-      set -s default-terminal 'xterm-256color'
-      set-option -ga terminal-overrides ",alacritty:Tc,xterm-256color:Tc"
+      set -s default-terminal 'screen-256color'
+      set-option -ga terminal-overrides ",alacritty:Tc,screen-256color:Tc"
 
       # This tmux statusbar config was created by tmuxline.vim
       # on Tue, 24 Dec 2019

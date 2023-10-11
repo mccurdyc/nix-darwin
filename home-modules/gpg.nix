@@ -8,10 +8,8 @@
   if isDarwin
   then {}
   else {
-    # services.gpg-agent = {
-    #   enable = true;
-    #   pinentryFlavor = "curses";
-    #   enableSshSupport = true;
-    # };
+    services.gpg-agent = {
+      enable = true;
+    };
   }
 )

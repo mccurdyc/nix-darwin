@@ -1,10 +1,12 @@
 {
+  vars,
   pkgs,
   config,
   pkgs-unstable,
   ...
 }: {
   networking = {
+    hostName = vars.name;
     firewall = {
       enable = true;
       allowedTCPPorts = [22];

@@ -56,6 +56,7 @@
             name = "nuc";
             hardware = "x86_64";
           };
+          inherit (nixpkgs) lib;
           inherit nixpkgs home-manager system;
         };
       };
@@ -70,7 +71,7 @@
           };
 
           inherit (nixpkgs) lib;
-          inherit nixpkgs nixpkgs-unstable home-manager system darwin;
+          inherit inputs nixpkgs nixpkgs-unstable home-manager system darwin;
         };
       };
     }

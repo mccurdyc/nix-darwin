@@ -1,17 +1,17 @@
-{ inputs
-, nixpkgs
-, nixpkgs-unstable
-, lib
-, home-manager
-, system
-, darwin
-, vars
-,
+{
+  inputs,
+  nixpkgs,
+  nixpkgs-unstable,
+  lib,
+  home-manager,
+  system,
+  darwin,
+  vars,
 }:
 darwin.lib.darwinSystem {
   inherit system;
 
-  inputs = { inherit inputs nixpkgs nixpkgs-unstable lib home-manager system darwin vars; };
+  inputs = {inherit inputs nixpkgs nixpkgs-unstable lib home-manager system darwin vars;};
 
   # nix-darwin level modules
   modules = [

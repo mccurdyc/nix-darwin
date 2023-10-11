@@ -1,9 +1,10 @@
-{ inputs
-, lib
-, nixpkgs
-, home-manager
-, system
-, vars
+{
+  inputs,
+  lib,
+  nixpkgs,
+  home-manager,
+  system,
+  vars,
 }:
 nixpkgs.lib.nixosSystem {
   inherit system;
@@ -34,6 +35,7 @@ nixpkgs.lib.nixosSystem {
             ./home-modules/git.nix
             ./home-modules/gpg.nix
             ./home-modules/home.nix
+            ./home-modules/nvim/default.nix
             ./home-modules/packages.nix
             ./home-modules/ssh.nix
             ./home-modules/tmux.nix

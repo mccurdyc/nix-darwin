@@ -1,14 +1,15 @@
-{ pkgs
-, config
-, pkgs-unstable
-, ...
+{
+  pkgs,
+  config,
+  pkgs-unstable,
+  ...
 }: {
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
-      trustedInterfaces = [ "tailscale0" ];
-      allowedUDPPorts = [ config.services.tailscale.port ];
+      allowedTCPPorts = [22];
+      trustedInterfaces = ["tailscale0"];
+      allowedUDPPorts = [config.services.tailscale.port];
       allowedUDPPortRanges = [
         {
           from = 60000;

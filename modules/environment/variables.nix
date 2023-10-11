@@ -1,6 +1,6 @@
 {
-  EDITOR = "neovim";
-  VISUAL = "neovim";
+  EDITOR = "nvim";
+  VISUAL = "nvim";
   TERM = "xterm-256color";
   BROWSER = "firefox";
 

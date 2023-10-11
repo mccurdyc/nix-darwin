@@ -1,8 +1,7 @@
-{
-  vars,
-  config,
-  pkgs-unstable,
-  ...
+{ vars
+, config
+, pkgs-unstable
+, ...
 }: {
   nix = {
     package = pkgs-unstable.nix;
@@ -10,7 +9,6 @@
     gc = {
       # Garbage Collection
       automatic = true;
-      interval.Day = 7;
       options = "--delete-older-than 7d";
     };
 
@@ -18,8 +16,8 @@
       sandbox = "relaxed";
       auto-optimise-store = true;
 
-      allowed-users = [vars.user];
-      trusted-users = ["root" vars.user];
+      allowed-users = [ vars.user ];
+      trusted-users = [ "root" vars.user ];
 
       substituters = [
         "https://union.cachix.org/"

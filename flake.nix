@@ -19,7 +19,7 @@
   };
 
   outputs =
-    { self
+    inputs@{ self
     , nixpkgs
     , nixpkgs-unstable
     , home-manager
@@ -49,6 +49,7 @@
               name = "fgnix";
               hardware = "gce-x86_64-vm";
             };
+            inherit (nixpkgs) lib;
             inherit inputs nixpkgs home-manager system;
           };
 
@@ -58,7 +59,7 @@
               name = "nuc";
               hardware = "x86_64";
             };
-            inherit inputs home-manager system;
+            inherit nixpkgs home-manager system;
           };
         };
 
@@ -74,7 +75,7 @@
             };
 
             inherit (nixpkgs) lib;
-            inherit inputs nixpkgs nixpkgs-unstable home-manager system darwin;
+            inherit nixpkgs nixpkgs-unstable home-manager system darwin;
           };
         };
     }

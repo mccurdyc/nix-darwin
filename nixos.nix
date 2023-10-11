@@ -8,11 +8,9 @@
 nixpkgs.lib.nixosSystem {
   inherit system;
 
-  inputs = { inherit inputs nixpkgs home-manager system vars; };
-
   # NixOS level modules
   modules = [
-    "./hardware/${vars.hardware}.nix"
+    ./nixos/hardware/${vars.hardware}.nix
     ./modules/environment.nix
     ./modules/fonts.nix
     ./modules/misc.nix
@@ -63,6 +61,7 @@ nixpkgs.lib.nixosSystem {
     # Arguments that are exposed to every `module`.
     {
       config._module.args = {
+        inherit vars;
         currentSystemName = vars.name;
         currentSystem = system;
         pkgs-unstable = import inputs.nixpkgs-unstable {

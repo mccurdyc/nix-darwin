@@ -1,10 +1,9 @@
-{
-  inputs,
-  pkgs,
-  config,
-  pkgs-unstable,
-  lib,
-  ...
+{ inputs
+, pkgs
+, config
+, pkgs-unstable
+, lib
+, ...
 }: {
   security.sudo.wheelNeedsPassword = false;
 
@@ -14,7 +13,7 @@
     autoPrune = {
       enable = true;
       dates = "weekly";
-      flags = ["--all"];
+      flags = [ "--all" ];
     };
   };
 
@@ -29,17 +28,8 @@
 
   # if you also want support for flakes
   nixpkgs.overlays = [
-    (self: super: {nix-direnv = super.nix-direnv.override {enableFlakes = true;};})
+    (self: super: { nix-direnv = super.nix-direnv.override { enableFlakes = true; }; })
   ];
-
-  # https://fzakaria.com/2020/09/17/tailscale-is-magic-even-more-so-with-nixos.html
-  # enable the tailscale daemon; this will do a variety of tasks:
-  # 1. create the TUN network device
-  # 2. setup some IP routes to route through the TUN
-  services.tailscale = {
-    enable = true;
-    package = pkgs-unstable.tailscale;
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

@@ -89,6 +89,10 @@
       # NOTE: I had issues with zsh-vi-mode overwriting ^R
       source ${pkgs.fzf}/share/fzf/key-bindings.zsh
 
+      source <(stern --completion=zsh)
+      eval "$(fastly --completion-script-zsh)"
+      eval $(keychain --eval --quiet ~/.ssh/fastly_rsa)
+
       # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html#cli-command-completion-path
       autoload bashcompinit && bashcompinit
       autoload -Uz compinit && compinit

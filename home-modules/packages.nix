@@ -42,6 +42,7 @@ in {
         google-cloud-sdk
         gopls
         gron
+        keychain
         hadolint
         htop
         jq

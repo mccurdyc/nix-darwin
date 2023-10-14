@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+imports = [
+./hardware/vm-gce-x86_64.nix
+];
+
   config.modules.packages = {
     enable = true;
     additionalPackages = with pkgs; [

@@ -55,18 +55,6 @@ with lib; {
   systemd.services.google-startup-scripts.wantedBy = ["multi-user.target"];
   systemd.services.google-shutdown-scripts.wantedBy = ["multi-user.target"];
 
-  security.sudo.extraRules = mkIf config.users.mutableUsers [
-    {
-      groups = ["google-sudoers"];
-      commands = [
-        {
-          command = "ALL";
-          options = ["NOPASSWD"];
-        }
-      ];
-    }
-  ];
-
   users.groups.google-sudoers = mkIf config.users.mutableUsers {};
 
   boot.extraModprobeConfig = lib.readFile "${pkgs.google-guest-configs}/etc/modprobe.d/gce-blacklist.conf";

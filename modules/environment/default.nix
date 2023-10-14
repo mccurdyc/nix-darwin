@@ -33,11 +33,6 @@
       '')
     ];
 
-    variables = import ./environment/variables.nix;
-
-    pathsToLink = [
-      "/share/zsh" # required for zsh autocomplete
-      "/share/nix-direnv"
-    ];
+    variables = import ./variables.nix;
   };
 }

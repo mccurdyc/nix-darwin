@@ -5,6 +5,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # Unstable Nix Packages
 
     flake-utils.url = "github:numtide/flake-utils";
+
     home-manager = {
       # User Environment Manager
       url = "github:nix-community/home-manager/release-23.05";
@@ -18,61 +19,35 @@
     };
   };
 
-  outputs = inputs @ {
+  outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
     home-manager,
     flake-utils,
     darwin,
     ...
-  }: let
-    mkNixos = import ./nixos.nix;
-    mkDarwin = import ./darwin.nix;
+  } @ inputs: let
+    mkSystem = import ./lib/mkSystem.nix {
+      inherit nixpkgs inputs;
+    };
 
     user = "mccurdyc";
-    hashedPassword = "$6$d5uf.fUvF9kZ8iwH$/Bm6m3Hk82rj2V4d0pba1u6vCXIh/JLURv6Icxf1ok0heX1oK6LwSIXSeIOPriBLBnpq3amOV.pWLas0oPeCw1";
-    authorizedKeys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO2cxynJf1jRyVzsOjqRYVkffIV2gQwNc4Cq4xMTcsmN"
-    ];
   in
-    rec {
-      nixosConfigurations = let
+    {
+      nixosConfigurations.fgnix = mkSystem "fgnix" {
         system = "x86_64-linux";
-      in {
-        fgnix = mkNixos {
-          vars = {
-            inherit user hashedPassword authorizedKeys;
-            name = "fgnix";
-            hardware = "gce-x86_64-vm";
-          };
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager system;
-        };
-
-        nuc = mkNixos {
-          vars = {
-            inherit user hashedPassword authorizedKeys;
-            name = "nuc";
-            hardware = "x86_64";
-          };
-          inherit (nixpkgs) lib;
-          inherit nixpkgs home-manager system;
-        };
+        inherit user;
       };
 
-      darwinConfigurations = let
-        system = "aarch64-darwin";
-      in {
-        faamac = mkDarwin {
-          vars = {
-            inherit user;
-            name = "faamac";
-          };
+      nixosConfigurations.nuc = mkSystem "nuc" {
+        system = "x86_64-linux";
+        inherit user;
+      };
 
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs nixpkgs-unstable home-manager system darwin;
-        };
+      darwinConfigurations.faamac = mkSystem "faamac" {
+        system = "aarch64-darwin";
+        darwin = true;
+        inherit user;
       };
     }
     // (flake-utils.lib.eachDefaultSystem (
@@ -80,12 +55,6 @@
         pkgs = import nixpkgs {inherit system;};
       in {
         formatter = pkgs.alejandra;
-
-        devShells = {
-          default = pkgs.mkShell {
-            buildInputs = with pkgs; [nil sumneko-lua-language-server cmake-language-server];
-          };
-        };
       }
     ));
 }

@@ -1,26 +1,26 @@
 {
-  vars,
-  config,
+  inputs,
   pkgs,
-  lib,
   ...
 }: {
-  services.nix-daemon.enable = true;
-
-  networking.computerName = vars.name;
-
   homebrew = {
     enable = true;
-    onActivation = {
-      autoUpdate = false;
-      upgrade = false;
-      cleanup = "zap";
-    };
     brews = [
       "wireguard-tools"
     ];
     casks = [
+      "1password"
+      "firefox"
+      "slack"
+      "spotify"
     ];
+  };
+
+  # The user should already exist, but we need to set this up so Nix knows
+  # what our home directory is (https://github.com/LnL7/nix-darwin/issues/423).
+  users.users.mccurdyc = {
+    home = "/Users/mccurdyc";
+    shell = pkgs.zsh;
   };
 
   system = {
@@ -31,7 +31,7 @@
         NSAutomaticSpellingCorrectionEnabled = false;
       };
       dock = {
-        autohide = true;
+        autohide = false;
         orientation = "bottom";
         showhidden = true;
         tilesize = 40;

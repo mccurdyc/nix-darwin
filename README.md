@@ -1,3 +1,4 @@
+# ARCHIVED - MOVED to https://github.com/mccurdyc/nixos-config/tree/5673940bbfb75f19a39c7d116a3514f83f29e1fa
 
 ## Inspiration
 

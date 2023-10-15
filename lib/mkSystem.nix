@@ -11,18 +11,14 @@
   profile,
   darwin ? false,
 }: let
-  # DONE
   machineConfig = ../machines/${name}.nix;
-  # DONE
   userOSConfig =
     ../users/${user}/${
       if darwin
       then "darwin"
       else "nixos"
     }.nix;
-  # DONE
   userHMConfig = ../users/${user}/home-manager.nix;
-  profileHMConfig = ../machines/profiles/${profile}/home-manager.nix;
 
   # NixOS vs nix-darwin functions
   systemFunc =
@@ -49,10 +45,11 @@ in
             useUserPackages = true;
             users.${user} = import userHMConfig {
               inherit inputs nixpkgs-unstable;
-            };
+	    };
+
             # passed to every `home-module`.
             extraSpecialArgs = {
-              inherit inputs darwin;
+              inherit inputs darwin profile;
               pkgs-unstable = import inputs.nixpkgs-unstable {
                 inherit system;
                 config.allowUnfree = true;
@@ -64,7 +61,7 @@ in
         # passed to every module
         {
           config._module.args = {
-            inherit inputs;
+            inherit inputs profile;
             currentSystem = system;
             currentSystemName = name;
             currentSystemUser = user;

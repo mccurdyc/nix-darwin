@@ -1,6 +1,7 @@
 {inputs, ...}: {
   config,
   lib,
+  profile,
   pkgs,
   ...
 }: let
@@ -47,10 +48,11 @@ in {
     ./modules/git.nix
     ./modules/gpg.nix
     ./modules/nvim/default.nix
-    # TODO
     ./modules/packages.nix
     ./modules/ssh.nix
     ./modules/tmux.nix
     ./modules/zsh.nix
+
+    ./profiles/${profile}/home-manager.nix
   ];
 }

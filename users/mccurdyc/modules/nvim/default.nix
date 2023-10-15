@@ -10,7 +10,7 @@
   };
 
   xdg.configFile.nvim = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nixos-config/home-modules/nvim/config";
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/nixos-config/users/mccurdyc/modules/nvim/config";
     recursive = true;
   };
 }

@@ -9,13 +9,6 @@
 
 ## Steps
 
-1. Manual App installs for apps that just don't seem to work when installed via nix-darwin
-
-    - GoodNotes 5
-    - Firefox
-    - 1Password (GUI)
-    - Zoom
-
 1. Install Nix
 
     ```bash
@@ -31,9 +24,8 @@
 
     ```bash
     nix-env -iA nixpkgs.git
-    git clone https://github.com/mccurdyc/nixos-config ~/nixos-config
-    cd ~/nixos-config
-    ln -s $HOME/nixos-config $HOME/.config/nixpkgs
+    git clone https://github.com/mccurdyc/nixos-config ~/.config/nixos-config
+    cd ~/.config/nixos-config
     ```
 
 1. Rebuild
@@ -41,13 +33,13 @@
     ```bash
     sudo NIXPKGS_ALLOW_UNFREE=1 \
     HOME=/var/root NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt \
-    nix build --extra-experimental-features 'nix-command flakes' --impure .#darwinConfigurations.faamac.system
+    nix build --extra-experimental-features 'nix-command flakes' --impure '.#darwinConfigurations.faamac.system'
     ```
 
     Activate
 
     ```bash
-    ./result/sw/bin/darwin-rebuild switch --flake .#faamac
+    export NIXPKGS_ALLOW_UNFREE=1; /result/sw/bin/darwin-rebuild switch --impure --flake '.#faamac'
     ```
 
 1. Start tailscale daemon

@@ -5,8 +5,7 @@
   nixpkgs-unstable,
   inputs,
   lib,
-  }:
-name: {
+}: name: {
   system,
   user,
   profile,
@@ -38,58 +37,60 @@ in
   systemFunc rec {
     inherit system;
 
-    modules = [
-      machineConfig
-      userOSConfig
+    modules =
+      [
+        machineConfig
+        userOSConfig
 
-      home-manager.home-manager
-      {
-        home-manager = {
-	useGlobalPkgs = true;
-        useUserPackages = true;
-        users.${user} = import userHMConfig {
-          inherit inputs nixpkgs-unstable;
-        };
-	# passed to every `home-module`.
-        extraSpecialArgs = {
-          inherit inputs darwin;
-          pkgs-unstable = import inputs.nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
+        home-manager.home-manager
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            users.${user} = import userHMConfig {
+              inherit inputs nixpkgs-unstable;
+            };
+            # passed to every `home-module`.
+            extraSpecialArgs = {
+              inherit inputs darwin;
+              pkgs-unstable = import inputs.nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+              };
+            };
           };
-        };
-	};
-      }
+        }
 
-      # passed to every module
-      {
-        config._module.args = {
-          inherit inputs;
-          currentSystem = system;
-          currentSystemName = name;
-          currentSystemUser = user;
-	  pkgs-unstable = import inputs.nixpkgs-unstable {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        };
-      }
-    ] ++ [
-      ../modules/environment.nix
-      ../modules/fonts.nix
-      ../modules/misc.nix
-      ../modules/networking.nix
-      ../modules/nix.nix
-      ../modules/nixpkgs.nix
-      ../modules/openssh.nix
-      ../modules/zsh.nix
-
-    ] ++ (if darwin
-      then 
-      	[
-      	../modules/yabai.nix
-      	../modules/skhd.nix
-	]
-	else 
-	[]);
+        # passed to every module
+        {
+          config._module.args = {
+            inherit inputs;
+            currentSystem = system;
+            currentSystemName = name;
+            currentSystemUser = user;
+            pkgs-unstable = import inputs.nixpkgs-unstable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          };
+        }
+      ]
+      ++ [
+        ../modules/environment.nix
+        ../modules/fonts.nix
+        ../modules/misc.nix
+        ../modules/networking.nix
+        ../modules/nix.nix
+        ../modules/nixpkgs.nix
+        ../modules/openssh.nix
+        ../modules/zsh.nix
+      ]
+      ++ (
+        if darwin
+        then [
+          ../modules/yabai.nix
+          ../modules/skhd.nix
+        ]
+        else []
+      );
   }

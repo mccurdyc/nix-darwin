@@ -30,7 +30,7 @@
   } @ inputs: let
     mkSystem = import ./lib/mkSystem.nix {
       inherit nixpkgs nixpkgs-unstable inputs;
-              inherit (nixpkgs) lib;
+      inherit (nixpkgs) lib;
     };
 
     user = "mccurdyc";
@@ -38,7 +38,7 @@
     {
       nixosConfigurations.fgnix = mkSystem "fgnix" {
         system = "x86_64-linux";
-	profile = "work";
+        profile = "work";
         inherit user;
       };
 
@@ -49,8 +49,8 @@
 
       darwinConfigurations.faamac = mkSystem "faamac" {
         system = "aarch64-darwin";
-	profile = "work";
-        darwin = "true";
+        profile = "work";
+        darwin = true;
         inherit user;
       };
     }

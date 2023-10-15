@@ -1,6 +1,8 @@
-
-{config, pkgs, ...}: {
-
+{
+  config,
+  pkgs,
+  ...
+}: {
   config.modules.packages = {
     enable = true;
     additionalPackages = with pkgs; [
@@ -18,4 +20,3 @@
     ];
   };
 }
-

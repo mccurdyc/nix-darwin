@@ -40,6 +40,7 @@
 
     ```bash
     export NIXPKGS_ALLOW_UNFREE=1; /result/sw/bin/darwin-rebuild switch --impure --flake '.#faamac'
+    rm -rf result
     ```
 
 1. Start tailscale daemon

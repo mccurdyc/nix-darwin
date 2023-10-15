@@ -45,7 +45,7 @@ in
             useUserPackages = true;
             users.${user} = import userHMConfig {
               inherit inputs nixpkgs-unstable;
-	    };
+            };
 
             # passed to every `home-module`.
             extraSpecialArgs = {
@@ -83,13 +83,13 @@ in
           ../modules/yabai.nix
           ../modules/skhd.nix
         ]
-	# TODO - move these to include the darwin conditional in each module
+        # TODO - move these to include the darwin conditional in each module
         else [
-        ../modules/networking.nix
-        ../modules/misc.nix
-        ../modules/fonts.nix
-        ../modules/nixpkgs.nix
-        ../modules/openssh.nix
-	]
+          ../modules/networking.nix
+          ../modules/misc.nix
+          ../modules/fonts.nix
+          ../modules/nixpkgs.nix
+          ../modules/openssh.nix
+        ]
       );
   }

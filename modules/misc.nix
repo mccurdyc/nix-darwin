@@ -23,10 +23,6 @@
 
   services.xserver.desktopManager.xterm.enable = false;
 
-  # Boot settings: clean /tmp/, latest kernel and enable bootloader
-  boot.tmp.cleanOnBoot = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
   # if you also want support for flakes
   nixpkgs.overlays = [
     (self: super: {nix-direnv = super.nix-direnv.override {enableFlakes = true;};})

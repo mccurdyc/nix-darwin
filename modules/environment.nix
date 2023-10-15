@@ -8,12 +8,13 @@
 
     systemPackages = with pkgs; [
       _1password # export NIXPKGS_ALLOW_UNFREE=1
-      alacritty
       curl
       git
       gnumake
       coreutils
       cmake
+      openssl
+      gcc
       gnupg
       mosh
       neovim

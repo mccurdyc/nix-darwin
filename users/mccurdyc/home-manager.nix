@@ -23,7 +23,6 @@ in {
   home.stateVersion = "23.05";
   xdg.enable = true;
 
-  # Need to run `vale sync` to install styles.
   home.sessionPath = [
     "$HOME/go/bin"
     "$HOME/.cargo/bin"

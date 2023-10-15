@@ -61,7 +61,7 @@ in
         # passed to every module
         {
           config._module.args = {
-            inherit inputs profile;
+            inherit inputs lib profile;
             currentSystem = system;
             currentSystemName = name;
             currentSystemUser = user;
@@ -74,12 +74,7 @@ in
       ]
       ++ [
         ../modules/environment.nix
-        ../modules/fonts.nix
-        ../modules/misc.nix
-        ../modules/networking.nix
         ../modules/nix.nix
-        ../modules/nixpkgs.nix
-        ../modules/openssh.nix
         ../modules/zsh.nix
       ]
       ++ (
@@ -88,6 +83,13 @@ in
           ../modules/yabai.nix
           ../modules/skhd.nix
         ]
-        else []
+	# TODO - move these to include the darwin conditional in each module
+        else [
+        ../modules/networking.nix
+        ../modules/misc.nix
+        ../modules/fonts.nix
+        ../modules/nixpkgs.nix
+        ../modules/openssh.nix
+	]
       );
   }

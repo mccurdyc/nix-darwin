@@ -1,6 +1,8 @@
 {
   inputs,
   pkgs,
+  config,
+  lib,
   ...
 }: {
   homebrew = {
@@ -10,9 +12,11 @@
     ];
     casks = [
       "1password"
+      "obsidian"
       "firefox"
       "slack"
       "spotify"
+      "zoom"
     ];
   };
 

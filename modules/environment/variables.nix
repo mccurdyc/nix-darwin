@@ -2,8 +2,8 @@
   EDITOR = "nvim";
   VISUAL = "nvim";
   TERM = "screen-256color";
-  BROWSER = "firefox";
 
+  BROWSER = "firefox";
   DOCKER_DEFAULT_PLATFORM = "linux/amd64";
 
   FZF_DEFAULT_COMMAND = "fd --type f --hidden --exclude vendor --exclude .git";

@@ -1,11 +1,11 @@
-{isDarwin, ...}:
+{darwin, ...}:
 {
   programs.gpg = {
     enable = true;
   };
 }
 // (
-  if isDarwin
+  if darwin
   then {}
   else {
     services.gpg-agent = {

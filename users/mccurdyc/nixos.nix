@@ -3,7 +3,7 @@
   inputs,
   ...
 }: {
-  pathsToLink = [
+  environment.pathsToLink = [
     "/share/zsh" # required for zsh autocomplete
     "/share/nix-direnv"
   ];
@@ -15,7 +15,7 @@
 
   users = {
     mutableUsers = false;
-    users.mitchellh = {
+    users.mccurdyc = {
       isNormalUser = true;
       home = "/home/mccurdyc";
       extraGroups = ["docker" "wheel"];

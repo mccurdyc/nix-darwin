@@ -22,13 +22,15 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     home-manager,
     flake-utils,
     darwin,
     ...
   } @ inputs: let
     mkSystem = import ./lib/mkSystem.nix {
-      inherit nixpkgs inputs;
+      inherit nixpkgs nixpkgs-unstable inputs;
+              inherit (nixpkgs) lib;
     };
 
     user = "mccurdyc";
@@ -36,6 +38,7 @@
     {
       nixosConfigurations.fgnix = mkSystem "fgnix" {
         system = "x86_64-linux";
+	profile = "work";
         inherit user;
       };
 
@@ -46,7 +49,8 @@
 
       darwinConfigurations.faamac = mkSystem "faamac" {
         system = "aarch64-darwin";
-        darwin = true;
+	profile = "work";
+        darwin = "true";
         inherit user;
       };
     }

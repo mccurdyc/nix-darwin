@@ -33,6 +33,6 @@
       '')
     ];
 
-    variables = import ./variables.nix;
+    variables = import ./environment/variables.nix;
   };
 }

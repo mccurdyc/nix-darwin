@@ -2,10 +2,14 @@
 # particular architecture.
 {
   nixpkgs,
+  nixpkgs-unstable,
   inputs,
-}: name: {
+  lib,
+  }:
+name: {
   system,
   user,
+  profile,
   darwin ? false,
 }: let
   # DONE
@@ -19,6 +23,7 @@
     }.nix;
   # DONE
   userHMConfig = ../users/${user}/home-manager.nix;
+  profileHMConfig = ../machines/profiles/${profile}/home-manager.nix;
 
   # NixOS vs nix-darwin functions
   systemFunc =
@@ -39,25 +44,38 @@ in
 
       home-manager.home-manager
       {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.${user} = import userHMConfig {
-          inherit inputs;
+        home-manager = {
+	useGlobalPkgs = true;
+        useUserPackages = true;
+        users.${user} = import userHMConfig {
+          inherit inputs nixpkgs-unstable;
         };
+	# passed to every `home-module`.
+        extraSpecialArgs = {
+          inherit inputs darwin;
+          pkgs-unstable = import inputs.nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        };
+	};
       }
 
-      # https://nix-community.github.io/home-manager/options.html
+      # passed to every module
       {
         config._module.args = {
+          inherit inputs;
           currentSystem = system;
           currentSystemName = name;
           currentSystemUser = user;
-          inherit inputs;
+	  pkgs-unstable = import inputs.nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
         };
       }
     ] ++ [
-      ../modules/environment/default.nix
-      ../modules/environment/variables.nix
+      ../modules/environment.nix
       ../modules/fonts.nix
       ../modules/misc.nix
       ../modules/networking.nix
